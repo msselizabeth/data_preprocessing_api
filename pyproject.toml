@@ -1,0 +1,20 @@
+[project]
+name = "data-processing-api"
+version = "0.1.0"
+description = "API that helps to use DS/ML data preprocession operations via iPaaS"
+authors = [
+    {name = "Elizabeth Sheremet"}
+]
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "fastapi (>=0.150.0,<0.151.0)",
+    "uvicorn (>=0.54.0,<0.55.0)"
+]
+[tool.poetry]
+package-mode = false
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
