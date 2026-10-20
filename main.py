@@ -4,5 +4,5 @@ app = FastAPI()
 
 
 @app.get("/health")
-async def root():
+async def heath_check():
     return {"status": "ok", "message": "Hello from Data Proccessing API !"}
