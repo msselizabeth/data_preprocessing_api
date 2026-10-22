@@ -9,7 +9,9 @@ readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
     "fastapi (>=0.150.0,<0.151.0)",
-    "uvicorn (>=0.54.0,<0.55.0)"
+    "uvicorn (>=0.54.0,<0.55.0)",
+    "sqlalchemy[asyncio] (>=2.1.6,<3.0.0)",
+    "aiosqlite (>=0.22.1,<0.23.0)"
 ]
 [tool.poetry]
 package-mode = false
