@@ -4,6 +4,7 @@ from db.db import get_session
 from db.api_clients_model import ApiClient
 from schemas.api_client import ClientRegistrationResponse
 from helpers.generate_api_key import generate_api_key
+from auth import get_current_client
 
 app = FastAPI()
 
@@ -11,6 +12,10 @@ app = FastAPI()
 @app.get("/health")
 async def heath_check():
     return {"status": "ok", "message": "Hello from Data Proccessing API !"}
+
+@app.get("/auth-check", status_code=200)
+async def auth_check(client: ApiClient = Depends(get_current_client)) -> dict:
+    return {"client_id": client.id}
 
 
 @app.post("/clients", response_model=ClientRegistrationResponse, status_code=201)
