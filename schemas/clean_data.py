@@ -15,8 +15,12 @@ class CleanDataRequest(BaseModel):
 
     @field_validator("additional_values")
     @classmethod
-    def reject_blank_additional_values(cls, value: list[str]) -> list[str]:
+    def normalize_additional_values(cls, value: list[str]) -> list[str]:
+        cleaned_values = []
+
         for i, val in enumerate(value):
-            if not val.strip():
+            cleaned = val.strip()
+            if not cleaned:
                 raise ValueError(f"additional_values[{i}] must not be blank.")
-        return value
+            cleaned_values.append(cleaned)
+        return cleaned_values
