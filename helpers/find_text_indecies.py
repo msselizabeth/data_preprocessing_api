@@ -29,7 +29,7 @@ def find_text_index(text: str, add_values: list[str]) -> list[tuple[int, int, st
 if __name__ == "__main__":
     request = CleanDataRequest(
         text="Elizabeth emailed Elizabeth.",
-        additional_values=[" "],
+        additional_values=["Eli", "zab"],
     )
 
     print(request.additional_values)
