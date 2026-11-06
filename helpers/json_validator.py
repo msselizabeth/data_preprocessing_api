@@ -17,11 +17,11 @@ def get_selected_values(data: dict [str, JsonValue], paths: list[str]) -> dict[s
     return replace_dict
 
 
-if __name__ == "__main__":
-    data = {"name": "Elizabeth", "email": None, "orders_count": 5}
-    paths = ["/name", "/email"]
+# if __name__ == "__main__":
+#     data = {"name": "Elizabeth", "email": None, "orders_count": 5}
+#     paths = ["/name", "/email"]
 
-    print(f"Input: {data}")
+#     print(f"Input: {data}")
 
-    result = get_selected_values(data, paths)
-    print(f"Result: {result}")
+#     result = get_selected_values(data, paths)
+#     print(f"Result: {result}")
