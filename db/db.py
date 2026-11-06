@@ -1,6 +1,7 @@
 import asyncio
 from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker, AsyncSession
 from .api_clients_model import Base
+from .json_mappings_model import JsonMapping
 from collections.abc import AsyncIterator
 from pathlib import Path
 
