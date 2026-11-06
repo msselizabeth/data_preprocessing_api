@@ -19,3 +19,7 @@ class CleanJsonRequest(BaseModel):
                  raise ValueError(f"Invalid path at index: {i}. Please provide a filed name after '/'." )
 
         return value
+
+class CleanJsonResponse(BaseModel):
+    data: dict[str, JsonValue]
+    token: str
