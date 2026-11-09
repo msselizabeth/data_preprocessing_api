@@ -23,3 +23,11 @@ class CleanJsonRequest(BaseModel):
 class CleanJsonResponse(BaseModel):
     data: dict[str, JsonValue]
     token: str
+
+class RestoreJsonRequest(BaseModel):
+    data: dict[str, JsonValue]
+    token: str = Field(min_length=1)
+
+class RestoreJsonResponse(BaseModel):
+    data: dict[str, JsonValue]
+

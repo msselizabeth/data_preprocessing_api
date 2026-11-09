@@ -1,36 +1,37 @@
+import secrets
 from .json_validator import get_selected_values
 from pydantic import JsonValue
 
 
 def mask_json(
     data: dict[str, JsonValue], paths: list[str]
-) -> tuple[dict[str, JsonValue], dict[str, str]]:
+) -> tuple[dict[str, JsonValue], dict[str, str], dict[str, str]]:
     selected_values = get_selected_values(data, paths)
 
     masked_data = data.copy()
-    mappings = {}
-    val_counter = 1
+    mappings = {}  # all exising placeholders and their values
+    field_placeholders = {}  # path -> placeholder
+
+    operation_id = secrets.token_hex(16)
 
     for key, value in selected_values.items():
-        if value is None:
+        if value is None or value.strip() == "":
             continue
 
-        if value not in mappings.values():
-            placeholder = f"<VALUE_{val_counter}>"
+        field_name = key[1:]
 
-            while placeholder in data.values():
-                val_counter += 1
-                placeholder = f"<VALUE_{val_counter}>"
+        if value not in mappings.values():
+            placeholder = f"{field_name}_{operation_id}"
 
             mappings[placeholder] = value
-            masked_data[key[1:]] = placeholder
-            val_counter += 1
-
+            field_placeholders[key] = placeholder
+            masked_data[field_name] = placeholder
         else:
             matched_key = next((k for k, v in mappings.items() if v == value), None)
-            masked_data[key[1:]] = matched_key
+            masked_data[field_name] = matched_key
+            field_placeholders[key] = matched_key
 
-    return (masked_data, mappings)
+    return (masked_data, mappings, field_placeholders)
 
 
 def restore_json(
@@ -46,31 +47,23 @@ def restore_json(
     return restored_data
 
 
-# if __name__ == "__main__":
-    # data = {
-    #     "name": "Elizabeth",
-    #     "email": None,
-    #     "orders_count": 5,
-    #     "last_name": "Sheremet",
-    #     "empty_test": "",
-    #     "second_name_test": "Elizabeth"
-    # }
-    # paths = ["/name", "/email", "/last_name", "/empty_test", "/second_name_test"]
+if __name__ == "__main__":
+    data = {
+        "name": "Elizabeth",
+        "email": None,
+        "orders_count": 5,
+        "last_name": "Sheremet",
+        "empty_test": "",
+        "second_name_test": "Elizabeth",
+    }
+    paths = ["/name", "/email", "/last_name", "/empty_test", "/second_name_test"]
 
-    # data = {
-    #     "name": "Elizabeth",
-    #     "note": "<VALUE_1>",
-    #     "second_name": "Elizabeth",
-    # }
-    # paths = ["/name", "/second_name"]
+    masked_date, mappings, field_placeholders_dict = mask_json(data, paths)
+    print(f"Masking Result: {masked_date}\n")
+    print(f"Mappings: {mappings}\n")
+    print(f"Paths -> Placeholders Dict: {field_placeholders_dict}\n")
 
-    # masked_date, mappings = mask_json(data, paths)
-    # print(f"Masking Result: {masked_date}")
-    # print(f"mappings: {mappings}")
-
-    # restored = restore_json(masked_data=masked_date, mappings=mappings)
-
-    # print(f"Original data: {data}")
-    # print(f"Restored data: {restored}")
-
-    # print(restored == data)
+    restored = restore_json(masked_data=masked_date, mappings=mappings)
+    print(f"Original data: {data}\n")
+    print(f"Restored data: {restored}\n")
+    print(f"Original == Restired: {restored == data}")
