@@ -27,6 +27,7 @@ class CleanJsonResponse(BaseModel):
 class RestoreJsonRequest(BaseModel):
     data: dict[str, JsonValue]
     token: str = Field(min_length=1)
+    partial: bool = False
 
 class RestoreJsonResponse(BaseModel):
     data: dict[str, JsonValue]
