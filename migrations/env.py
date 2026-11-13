@@ -8,7 +8,8 @@ from sqlalchemy.ext.asyncio import async_engine_from_config
 from alembic import context
 
 # Added:
-from pathlib import Path
+# from pathlib import Path
+from db.config import database_url
 from db.api_clients_model import Base, ApiClient
 from db.json_mappings_model import JsonMapping
 
@@ -17,8 +18,9 @@ from db.json_mappings_model import JsonMapping
 config = context.config
 
 # My DB path
-database_path = Path(__file__).resolve().parent.parent / "db" / "database_prod.db"
-config.set_main_option("sqlalchemy.url", f"sqlite+aiosqlite:///{database_path}")
+# database_path = Path(__file__).resolve().parent.parent / "db" / "database_prod.db"
+# config.set_main_option("sqlalchemy.url", f"sqlite+aiosqlite:///{database_path")
+config.set_main_option("sqlalchemy.url", database_url.replace("%", "%%"))
 
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.
